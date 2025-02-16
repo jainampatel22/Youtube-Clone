@@ -1,0 +1,679 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Clone</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --main-bg: #0f0f0f;
+            --secondary-bg: #222222;
+            --text-color: #fff;
+            --secondary-text: #aaa;
+            --hover-color: #303030;
+            --button-color: #272727;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--main-bg);
+            padding: 0 20px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            border-bottom: 1px solid var(--secondary-bg);
+        }
+
+        .main-content {
+            display: flex;
+            margin-top: 56px;
+            padding: 24px 24px 0 24px;
+            gap: 24px;
+        }
+
+        .primary {
+            flex: 1;
+            max-width: 1280px;
+        }
+
+        .secondary {
+            width: 402px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            margin-top: 20px;
+        }
+
+        .video-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .engagement-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-bg);
+        }
+
+        .channel-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .channel-name {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .subscriber-count {
+            color: var(--secondary-text);
+            font-size: 12px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-button {
+            background: var(--button-color);
+            border: none;
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .action-button:hover {
+            background: var(--hover-color);
+        }
+
+        .subscribe-button {
+            background: #f00;
+            padding: 8px 16px;
+        }
+
+        .subscribe-button:hover {
+            background: #d00;
+        }
+
+        .description-box {
+            background: var(--button-color);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .description-box .stats {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .description-text {
+            color: var(--secondary-text);
+            line-height: 1.5;
+        }
+
+        .comments-section {
+            margin-top: 24px;
+        }
+
+        .comments-header {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .comment-input-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-bg);
+        }
+
+        .comment-input-wrapper {
+            flex: 1;
+            border-bottom: 1px solid var(--secondary-bg);
+            padding-bottom: 8px;
+        }
+
+        .comment-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 14px;
+            outline: none;
+            resize: none;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .commenter-name {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            color: var(--secondary-text);
+            font-size: 12px;
+        }
+
+        .suggested-videos {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .video-suggestion {
+            display: flex;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .video-suggestion:hover {
+            background: var(--hover-color);
+        }
+
+        .thumbnail {
+            width: 168px;
+            height: 94px;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+        }
+
+        .suggestion-info {
+            flex: 1;
+        }
+
+        .suggestion-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .suggestion-channel {
+            font-size: 12px;
+            color: var(--secondary-text);
+            margin-bottom: 4px;
+        }
+
+        .suggestion-stats {
+            font-size: 12px;
+            color: var(--secondary-text);
+        }      .thumbnail {
+            width: 168px;
+            height: 94px;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .action-button.active {
+            background: var(--hover-color);
+        }
+
+        .action-button.active i {
+            color: #3ea6ff;
+        }
+
+        .comment-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .comment-input:focus + .comment-buttons {
+            display: flex;
+        }
+
+        .comment-button {
+            padding: 8px 16px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+        }
+
+        .comment-button.cancel {
+            background: transparent;
+            color: var(--text-color);
+        }
+
+        .comment-button.submit {
+            background: #3ea6ff;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .comment-button.submit:disabled {
+            background: #272727;
+            color: #717171;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-start">
+            <button class="action-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="primary">
+            <div class="video-container">
+                <iframe id="videoPlayer" allowfullscreen></iframe>
+            </div>
+
+            <div class="video-info">
+                <h1 id="videoTitle" class="video-title">Video Title</h1>
+
+                <div class="engagement-section">
+                    <div class="channel-info">
+                        <div class="channel-avatar"></div>
+                        <div class="channel-details">
+                            <span class="channel-name">Channel Name</span>
+                            <span class="subscriber-count">1.2M subscribers</span>
+                        </div>
+                        <button class="action-button subscribe-button">Subscribe</button>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-button" id="likeButton">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span id="likeCount">0</span>
+                        </button>
+                        <button class="action-button" id="dislikeButton">
+                            <i class="fas fa-thumbs-down"></i>
+                            <span id="dislikeCount">0</span>
+                        </button>
+                        <button class="action-button">
+                            <i class="fas fa-share"></i>
+                            <span>Share</span>
+                        </button>
+                        <button class="action-button">
+                            <i class="fas fa-ellipsis"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="description-box">
+                    <div class="stats">
+                        <span>1.2M views</span>
+                        <span>2 months ago</span>
+                    </div>
+                    <p class="description-text" id="descriptionText">
+                        Video description goes here. Click show more to see the full description...
+                    </p>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <h2>Comments</h2>
+                        <span id="commentCount">0 Comments</span>
+                    </div>
+
+                    <div class="comment-input-container">
+                        <div class="user-avatar"></div>
+                        <div class="comment-input-wrapper">
+                            <textarea class="comment-input" placeholder="Add a comment..."></textarea>
+                            <div class="comment-buttons">
+                                <button class="comment-button cancel">Cancel</button>
+                                <button class="comment-button submit" disabled>Comment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="commentsList"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="secondary">
+            <div class="suggested-videos" id="suggestedVideos"></div>
+        </div>
+    </div>
+
+    <script>
+
+const videos = [
+            { 
+                title: "Guess the Different Country Food Challenge !", 
+                url: "https://www.youtube.com/embed/ei8oBxAowa4?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/ei8oBxAowa4/hqdefault.jpg"
+            },
+            { 
+                title: "I Built an AI Photo-Generating Project in 8 Hours", 
+                url: "https://www.youtube.com/embed/3j8JLXDRf1c?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://i.ytimg.com/vi/3j8JLXDRf1c/hqdefault.jpg"
+            },
+            { 
+                title: "Docker Container Patterns - Master Deployments", 
+                url: "https://www.youtube.com/embed/P6FZIDJ_Gc4?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/P6FZIDJ_Gc4/hqdefault.jpg"
+            },
+            { 
+                title: "Masterplan to win your next Hackathon | Ft. Spline", 
+                url: "https://www.youtube.com/embed/0IXQDsdCWpE?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/0IXQDsdCWpE/hqdefault.jpg"
+            },
+            { 
+                title: "India’s Got Latent Controversy Gone too FAR Now!😰…BeerBiceps, Samay Raina, Ashish Chanchlani Friend", 
+                url: "https://www.youtube.com/embed/x2F8s0kctfE?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/x2F8s0kctfE/hqdefault.jpg"
+            },
+            { 
+                title: "Rizzing Up Creators with Cheesy Pickup Lines! 😂❤️", 
+                url: "https://www.youtube.com/embed/FZrNb0EtNww?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/FZrNb0EtNww/hqdefault.jpg"
+            },
+            { 
+                title: "Working 24 Hours as a Zomato Rider !", 
+                url: "https://www.youtube.com/embed/L1sAuKwzQGY?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/L1sAuKwzQGY/hqdefault.jpg"
+            },
+            { 
+                title: "I Asked Lamborghini for a Free Car!", 
+                url: "https://www.youtube.com/embed/HfxA7wyULTw?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/HfxA7wyULTw/hqdefault.jpg"
+            },{
+                title: "When Indians Visit TAJ MAHAL For The First Time", 
+                url: "https://www.youtube.com/embed/LSYyNSHwGW8?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/LSYyNSHwGW8/hqdefault.jpg"
+            
+            },{
+                title: "Eating Every Legendary Biryani in India for 100 Hours", 
+                url: "https://www.youtube.com/embed/gC-uNHqSwJw?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/gC-uNHqSwJw/hqdefault.jpg"
+            
+            },{
+                title: "गड्ढे से बाहर निकलो चैलेंज - Loser Will Eat Jolo Chips...🥵 | Deep Hole Challenge", 
+                url: "https://www.youtube.com/embed/HA_jyTc2atM?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/HA_jyTc2atM/hqdefault.jpg"
+            
+            },{
+                title: "'Aquapeya' की Branding लगी Sharks को किसकी Copycat? | Shark Tank India S4 | Full Pitch", 
+                url: "https://www.youtube.com/embed/FE8vIjxs24o?modestbranding=1&rel=0&showinfo=0", 
+                thumbnail: "https://img.youtube.com/vi/FE8vIjxs24o/hqdefault.jpg"
+            
+            }
+        ];
+
+// Initialize likes and dislikes
+let likes = 0;
+let dislikes = 0;
+let likeActive = false;
+let dislikeActive = false;
+
+function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        title: params.get('title') || 'Sample Video Title',
+        url: params.get('url')
+    };
+}
+
+function renderSuggestedVideos() {
+    const suggestedVideosContainer = document.getElementById('suggestedVideos');
+    suggestedVideosContainer.innerHTML = ''; // Clear existing content
+
+    videos.forEach(video => {
+        const suggestion = document.createElement('div');
+        suggestion.className = 'video-suggestion';
+        suggestion.innerHTML = `
+            <div class="thumbnail">
+                <img src="${video.thumbnail}" alt="${video.title}">
+            </div>
+            <div class="suggestion-info">
+                <div class="suggestion-title">${video.title}</div>
+                <div class="suggestion-channel">Channel Name</div>
+                <div class="suggestion-stats">${Math.floor(Math.random() * 1000)}K views • ${Math.floor(Math.random() * 12)} months ago</div>
+            </div>
+        `;
+        suggestion.addEventListener('click', () => {
+            document.getElementById('videoPlayer').src = video.url;
+            document.getElementById('videoTitle').textContent = video.title;
+            window.scrollTo(0, 0);
+        });
+        suggestedVideosContainer.appendChild(suggestion);
+    });
+}
+
+function init() {
+    // Set up like/dislike buttons
+    const likeButton = document.getElementById('likeButton');
+    const dislikeButton = document.getElementById('dislikeButton');
+    const likeCount = document.getElementById('likeCount');
+    const dislikeCount = document.getElementById('dislikeCount');
+
+    likeButton.addEventListener('click', () => {
+        if (likeActive) {
+            likes--;
+            likeActive = false;
+            likeButton.classList.remove('active');
+        } else {
+            likes++;
+            likeActive = true;
+            likeButton.classList.add('active');
+            if (dislikeActive) {
+                dislikes--;
+                dislikeActive = false;
+                dislikeButton.classList.remove('active');
+            }
+        }
+        updateCounts();
+    });
+
+    dislikeButton.addEventListener('click', () => {
+        if (dislikeActive) {
+            dislikes--;
+            dislikeActive = false;
+            dislikeButton.classList.remove('active');
+        } else {
+            dislikes++;
+            dislikeActive = true;
+            dislikeButton.classList.add('active');
+            if (likeActive) {
+                likes--;
+                likeActive = false;
+                likeButton.classList.remove('active');
+            }
+        }
+        updateCounts();
+    });
+
+    // Set up comments
+    const commentInput = document.querySelector('.comment-input');
+    const commentSubmit = document.querySelector('.comment-button.submit');
+    const commentCancel = document.querySelector('.comment-button.cancel');
+    
+    commentInput.addEventListener('input', () => {
+        commentSubmit.disabled = !commentInput.value.trim();
+    });
+
+    commentInput.addEventListener('focus', function() {
+        this.parentElement.style.borderBottom = '2px solid #fff';
+    });
+
+    commentInput.addEventListener('blur', function() {
+        this.parentElement.style.borderBottom = '1px solid var(--secondary-bg)';
+    });
+
+    commentCancel.addEventListener('click', () => {
+        commentInput.value = '';
+        commentSubmit.disabled = true;
+    });
+
+    commentSubmit.addEventListener('click', addComment);
+
+    // Load initial video
+    const { title, url } = getQueryParams();
+    if (url) {
+        document.getElementById('videoPlayer').src = `${url}?autoplay=1`;
+        document.getElementById('videoTitle').innerText = title;
+    } else {
+        // Load first video by default
+        document.getElementById('videoPlayer').src = videos[0].url;
+        document.getElementById('videoTitle').innerText = videos[0].title;
+    }
+
+    // Render suggested videos
+    renderSuggestedVideos();
+}
+
+function updateCounts() {
+    document.getElementById('likeCount').textContent = likes;
+    document.getElementById('dislikeCount').textContent = dislikes;
+}
+
+let comments = [];
+
+function addComment() {
+    const commentInput = document.querySelector('.comment-input');
+    const commentText = commentInput.value.trim();
+    if (commentText) {
+        const comment = {
+            text: commentText,
+            likes: 0,
+            timestamp: new Date()
+        };
+        comments.unshift(comment);
+        renderComment(comment);
+        commentInput.value = '';
+        document.querySelector('.comment-button.submit').disabled = true;
+        updateCommentCount();
+    }
+}
+
+function renderComment(comment) {
+    const commentsList = document.getElementById('commentsList');
+    const commentElement = document.createElement('div');
+    commentElement.className = 'comment-item';
+    commentElement.innerHTML = `
+        <div class="user-avatar"></div>
+        <div class="comment-content">
+            <div class="commenter-name">User</div>
+            <div class="comment-text">${comment.text}</div>
+            <div class="comment-actions">
+                <button class="action-button">
+                    <i class="fas fa-thumbs-up"></i>
+                    <span>${comment.likes}</span>
+                </button>
+                <button class="action-button">
+                    <i class="fas fa-thumbs-down"></i>
+                </button>
+                <span>Reply</span>
+            </div>
+        </div>
+    `;
+    commentsList.insertBefore(commentElement, commentsList.firstChild);
+}
+
+function updateCommentCount() {
+    document.getElementById('commentCount').textContent = `${comments.length} Comments`;
+}
+
+// Initialize everything when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

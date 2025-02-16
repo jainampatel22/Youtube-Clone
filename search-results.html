@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text */
+}
+
+.results-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.search-result {
+    width: 300px;
+    padding: 10px;
+    background: #1e1e1e; /* Darker card background */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1); /* Softer shadow */
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.search-result:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.2);
+}
+
+.search-result img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.search-result a {
+    display: block;
+    margin-top: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #1e90ff; /* Bright blue */
+    transition: color 0.3s ease;
+}
+
+.search-result a:hover {
+    color: #00bfff; /* Lighter blue on hover */
+}
+
+    </style>
+</head>
+<body>
+
+    <h1>Search Results for: <span id="search-query"></span></h1>
+    <div class="results-container" id="searchResults"></div>
+
+    <script>
+        const videos = [
+            { title: "Guess the Different Country Food Challenge !", url: "https://www.youtube.com/embed/ei8oBxAowa4", thumbnail: "https://img.youtube.com/vi/ei8oBxAowa4/hqdefault.jpg" },
+            { title: "I Built an AI Photo-Generating Project in 8 Hours", url: "https://www.youtube.com/embed/3j8JLXDRf1c", thumbnail: "https://i.ytimg.com/vi/3j8JLXDRf1c/hqdefault.jpg" },
+            { title: "Docker Container Patterns - Master Deployments", url: "https://www.youtube.com/embed/P6FZIDJ_Gc4", thumbnail: "https://img.youtube.com/vi/P6FZIDJ_Gc4/hqdefault.jpg" },
+            { title: "Masterplan to win your next Hackathon | Ft. Spline", url: "https://www.youtube.com/embed/0IXQDsdCWpE", thumbnail: "https://img.youtube.com/vi/0IXQDsdCWpE/hqdefault.jpg" },
+            { title: "India’s Got Latent Controversy Gone too FAR Now!", url: "https://www.youtube.com/embed/x2F8s0kctfE", thumbnail: "https://img.youtube.com/vi/x2F8s0kctfE/hqdefault.jpg" },
+            { title: "Rizzing Up Creators with Cheesy Pickup Lines!", url: "https://www.youtube.com/embed/FZrNb0EtNww", thumbnail: "https://img.youtube.com/vi/FZrNb0EtNww/hqdefault.jpg" },
+            { title: "Working 24 Hours as a Zomato Rider!", url: "https://www.youtube.com/embed/L1sAuKwzQGY", thumbnail: "https://img.youtube.com/vi/L1sAuKwzQGY/hqdefault.jpg" },
+            { title: "I Asked Lamborghini for a Free Car!", url: "https://www.youtube.com/embed/HfxA7wyULTw", thumbnail: "https://img.youtube.com/vi/HfxA7wyULTw/hqdefault.jpg" },
+            { title: "When Indians Visit TAJ MAHAL For The First Time", url: "https://www.youtube.com/embed/LSYyNSHwGW8", thumbnail: "https://img.youtube.com/vi/LSYyNSHwGW8/hqdefault.jpg" },
+            { title: "Eating Every Legendary Biryani in India for 100 Hours", url: "https://www.youtube.com/embed/gC-uNHqSwJw", thumbnail: "https://img.youtube.com/vi/gC-uNHqSwJw/hqdefault.jpg" },
+            { title: "गड्ढे से बाहर निकलो चैलेंज - Loser Will Eat Jolo Chips...", url: "https://www.youtube.com/embed/HA_jyTc2atM", thumbnail: "https://img.youtube.com/vi/HA_jyTc2atM/hqdefault.jpg" },
+            { title: "'Aquapeya' की Branding लगी Sharks को किसकी Copycat?", url: "https://www.youtube.com/embed/FE8vIjxs24o", thumbnail: "https://img.youtube.com/vi/FE8vIjxs24o/hqdefault.jpg" }
+        ];
+
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function displaySearchResults() {
+            const query = getQueryParam('q');
+            if (query) {
+                document.getElementById('search-query').innerText = query;
+
+                const filteredResults = videos.filter(video => 
+                    video.title.toLowerCase().includes(query.toLowerCase())
+                );
+
+                const resultsContainer = document.getElementById('searchResults');
+                resultsContainer.innerHTML = ""; // Clear previous results
+
+                if (filteredResults.length > 0) {
+                    filteredResults.forEach(video => {
+                        const resultElement = document.createElement("div");
+                        resultElement.classList.add("search-result");
+
+                        resultElement.innerHTML = `
+                            <img src="${video.thumbnail}" alt="${video.title}">
+                            <a href="${video.url}" target="_blank">${video.title}</a>
+                        `;
+
+                        resultsContainer.appendChild(resultElement);
+                    });
+                } else {
+                    resultsContainer.innerHTML = "<p>No results found.</p>";
+                }
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+    const results = document.querySelectorAll(".search-result");
+
+    results.forEach(result => {
+        result.addEventListener("click", function () {
+            const videoId = this.getAttribute("data-video-id"); 
+            window.location.href = `video.html?videoId=${videoId}`;
+        });
+    });
+});
+        displaySearchResults();
+    </script>
+
+</body>
+</html>
