@@ -1,4 +1,4 @@
-![main_ytb](https://user-images.githubusercontent.com/102761127/180124363-19f80e33-e042-4bb1-a9c8-d18a8722fe0a.png)
+<!-- ![main_ytb](https://user-images.githubusercontent.com/102761127/180124363-19f80e33-e042-4bb1-a9c8-d18a8722fe0a.png)
 
 Live website:
 https://leonardoacr.github.io/youtube-clone-dark-theme/
@@ -181,4 +181,4 @@ This function get the input search and add as string to the actual YouTube searc
 ```
 
 
-
+ -->
